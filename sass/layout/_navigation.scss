@@ -1,0 +1,167 @@
+.navigation {
+    &__checkbox {
+        display: none;
+    }
+
+    &__button {
+        background-color: $color-white;
+        height: 7rem;
+        width: 7rem;
+        position: fixed;
+        top: 6rem;
+        right: 6rem;
+        border-radius: 50%;
+        z-index: 2000;
+        box-shadow: 0 1rem 3rem rgba($color-black, .1);
+        text-align: center;
+        cursor: pointer;
+    
+        @include respond(tab-port){
+            top: 4rem;
+            right:4rem;
+        }
+        
+        @include respond(phone){
+            top:3.5rem;
+            right:3.5rem;
+        }
+    }
+
+    &__background {
+        height: 6rem;
+        width: 6rem;
+        border-radius: 50%;
+        position: fixed;
+        top: 6.5rem;
+        right: 6.5rem;
+        background-image: radial-gradient($color-primary-light, $color-primary-dark);
+        z-index: 1000;
+        transition: transform .8s cubic-bezier(0.86, 0, 0.07, 1);
+
+        
+        // easings.net, 
+        @include respond(tab-port){
+            top: 4.5rem;
+            right:4.5rem;
+        }
+        @include respond(phone){
+            top:3rem;
+            right:3rem;
+        }
+    }
+
+    &__nav {
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1500;
+        opacity: 0;
+        width: 0; //홈 이미지에서 링크를 없애기위해서   
+        transition: all .8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+
+    &__list {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        list-style: none;
+        text-align: center;
+        width: 100%;
+    }
+    
+    &__item {
+        margin: 1rem;
+    }
+    &__link {
+        &:link,
+        &:visited {
+            display: inline-block; // 움직이는 이펙트 transition적용을 위해서
+            font-size: 3rem;
+            font-weight: 300;
+            padding: 1rem 2rem;
+            color: $color-white;
+            text-decoration: none;
+            text-transform: uppercase;
+            background-image: linear-gradient(120deg, transparent 0%, transparent 50%, $color-white 50%);
+            background-size: 220%; //모든 그레디언트를 왼쪽으로 보내고 투평한 부분이 왼쪽, 흰 부분이 오른쪽
+            transition: all .4s;
+
+            span {
+                margin-right: 1.5rem;
+                display: inline-block;
+            }
+        }
+        
+        // 만약 배경화면이 완전히 왼쪽으로 이동하면 원하는 이펙트
+        &:hover,
+        &:active {
+            background-position: 100%;
+            color: $color-primary;
+            transform: translateX(1rem);
+        }
+    }
+
+    //레이블을 클릭하면 체크박스에 체크가 되고 nav가 보여진다.
+    &__checkbox:checked ~ &__background {
+        transform: scale(80);
+    }
+
+    &__checkbox:checked ~ &__nav {
+        opacity: 1;
+        width: 100%;
+    }
+
+    // ICON
+
+    &__icon {
+        position: relative;
+        margin-top: 3.5rem;
+
+        &, // icon itself
+        &::before,
+        &::after {
+            width: 3rem;
+            height: 2px;
+            background-color: $color-grey-dark-3;
+            display: inline-block;
+        }
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            transition: all .2s;
+        }
+
+        &::before { top: -.8rem; }//up
+          //  transform-origin: right; // 시계방향으로 회전
+        &::after{top:.8rem; } //down
+        
+    }
+    &__button:hover &__icon::before{ // button의 child가 icon이므로
+        top: -1rem;
+    }
+    
+    &__button:hover &__icon::after{ // button의 child가 icon이므로
+        top: 1rem;
+    }
+
+    &__checkbox:checked + &__button &__icon {
+        background-color:transparent; // 가운데줄 없애기
+    }
+
+    
+    &__checkbox:checked + &__button &__icon::before {
+        top:0;
+        transform: rotate(135deg);
+    }
+
+    &__checkbox:checked + &__button &__icon::after {
+        top:0;
+        transform:rotate(-135deg);
+    }
+}
